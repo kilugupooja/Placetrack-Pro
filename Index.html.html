@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlaceTrack Pro - Career, Jobs & Learning Platform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #2563eb;
+            --secondary: #7c3aed;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --light: #f1f5f9;
+            --gray: #64748b;
+            --border: #e2e8f0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: var(--dark);
+        }
+        
+        /* Top Navigation Bar */
+        .top-nav {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .top-nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+        
+        .logo {
+            font-size: 1.8em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            position: relative;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            padding: 10px 0;
+            transition: color 0.3s;
+        }
+        
+        .nav-menu li:hover {
+            color: var(--primary);
+        }
+        
+        .nav-menu li::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-menu li:hover::after {
+            width: 100%;
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .search-box {
+            position: relative;
+            width: 400px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 45px 12px 20px;
+            border: 2px solid var(--border);
+            border-radius: 25px;
+            font-size: 0.95em;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            font-size: 18px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(37,99,235,0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37,99,235,0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            padding: 12px 28px;
+            border: 2px solid var(--primary);
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 24px;
+            padding: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .notification-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        .badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            padding: 60px;
+            color: white;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 300px;
+            opacity: 0.3;
+        }
+        
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: 20px;
+            position: relative;
+        }
+        
+        .hero-btn {
+            padding: 15px 35px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .hero-btn-white {
+            background: white;
+            color: var(--primary);
+        }
+        
+        .hero-btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            gap: 5px;
+            background: white;
+            padding: 8px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .tab-item {
+            flex: 1;
+            padding: 15px 25px;
+            text-align: center;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s;
+            color: var(--gray);
+        }
+        
+        .tab-item:hover {
+            color: var(--primary);
+        }
+        
+        .tab-item.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(37,99,235,0.3);
+        }
+        
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            border-color: var(--primary);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+        
+        .company-logo-small {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+        }
+        
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .card-subtitle {
+            color: var(--gray);
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+        
+        .card-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .tag {
+            background: var(--light);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .card-info {
+            color: var(--gray);
+            font-size: 0.9em;
+        }
+        
+        .card-action {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.95em;
+        }
+        
+        /* Sidebar Section */
+        .sidebar-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        .sidebar-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-weight: 600;
+        }
+        
+        .stat-value {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        
+        /* Notes/Resources Section */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .note-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+            border-left: 5px solid var(--primary);
+        }
+        
+        .note-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+        
+        .note-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .note-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .note-desc {
+            color: var(--gray);
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        
+        .note-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85em;
+            color: var(--gray);
+        }
+        
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+        
+        /* Section */
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            margin: 20px 0;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .progress-bar-bg {
+            width: 100%;
+            height: 12px;
+            background: var(--light);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            transition: width 0.8s ease;
+        }
+        
+        /* Job Filter */
+        .filter-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .filter-group {
+            margin-bottom: 25px;
+        }
+        
+        .filter-title {
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 40px 30px;
+            }
+            
+            .hero h1 {
+                font-size: 2em;
+            }
+            
+            .hero p {
+                font-size: 1.1em;
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.show {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: slideUp 0.5s;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .close-btn {
+            background: var(--light);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .close-btn:hover {
+            background: var(--danger);
+            color: white;
+            transform: rotate(90deg);
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: -100px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            padding: 18px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(16,185,129,0.4);
+            transition: bottom 0.5s;
+            z-index: 3000;
+            font-weight: 600;
+        }
+        
+        .toast.show {
+            bottom: 30px;
+        }
+        
+        /* Chart Container */
+        .chart-box {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 350px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="top-nav-container">
+            <div class="logo">🎓 PlaceTrack</div>
+            <ul class="nav-menu">
+                <li onclick="showMainSection('jobs')">Jobs</li>
+                <li onclick="showMainSection('internships')">Internships</li>
+                <li onclick="showMainSection('competitions')">Competitions</li>
+                <li onclick="showMainSection('courses')">Courses</li>
+                <li onclick="showMainSection('notes')">Study Notes</li>
+            </ul>
+            <div class="nav-actions">
+                <div class="search-box">
+                    <input type="text" placeholder="Search jobs, companies, skills...">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <div class="notification-icon" onclick="openNotifications()">
+                    🔔
+                    <span class="badge">8</span>
+                </div>
+                <button class="btn-primary" onclick="openModal('loginModal')">Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>Find Your Dream Job & Learn</h1>
+            <p>Access 10,000+ jobs, internships, competitions and comprehensive study materials</p>
+            <div class="hero-actions">
+                <button class="hero-btn hero-btn-white" onclick="showMainSection('jobs')">Explore Jobs</button>
+                <button class="hero-btn hero-btn-outline" onclick="showMainSection('notes')">Browse Notes</button>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <div class="tab-item active" onclick="changeTab(this, 'jobs')">🔥 Hot Jobs</div>
+            <div class="tab-item" onclick="changeTab(this, 'internships')">💼 Internships</div>
+            <div class="tab-item" onclick="changeTab(this, 'competitions')">🏆 Competitions</div>
+            <div class="tab-item" onclick="changeTab(this, 'notes')">📚 Study Notes</div>
+            <div class="tab-item" onclick="changeTab(this, 'tracker')">📊 My Tracker</div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-layout">
+            <div class="main-content">
+                <!-- Jobs Section -->
+                <div class="section active" id="jobs">
+                    <h2 style="font-size: 2em; margin-bottom: 25px; color: var(--dark);">🔥 Trending Job Opportunities</h2>
+                    <div class="cards-grid">
+                        <div class="card" onclick="openModal('jobDetailModal')">
+                            <div class="card-header">
+                                <div>
+                                    <div class="company-logo-small">G</div>
+                                </div>
+                                <span class="tag" style="background: #e0f2fe; color: #0284c7;">New</span>
+                            </div>
+                            <div class="card-title">Software Engineer</div>
+                            <div class="card-subtitle">Google Inc. • Bangalore, India</div>
+                            <div class="card-tags">
+                                <span class="tag">Full-time</span>
+                                <span class="tag">Remote</span>
+                                <span class="tag">₹15-25 LPA</span>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-info">📅 Posted 2 days ago</span>
+                                <span class="card-action">Apply Now →</span>
+                            </div>
+                        </div>
+
+                        <div class="card" onclick="openModal('jobDetailModal')">
+                            <div class="card-header">
+                                <div>
+                                    <div class="company-logo-small" style="background: linear-gradient(135deg, #00A4EF, #0078D4);">M</div>
+                                </div>
+                                <span class="tag" style="background: #fef3c7; color: #d97706;">Featured</span>
+                            </div>
+                            <div class="card-title">Data Analyst</div>
+                            <div class="card-subtitle">Microsoft • Hyderabad, India</div>
+                            <div class="card-tags">
+                                <span class="tag">Full-time</span>
+                                <span class="tag">Hybrid</span>
+                                <span class="tag">₹12-18 LPA</span>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-info">📅 Posted 1 day ago</span>
+                                <span class="card-action">Apply Now →</span>
+                            </div>
+                        </div>
+
+                        <div class="card" onclick="openModal('jobDetailModal')">
+                            <div class="card-header">
+                                <div>
+                                    <div class="company-logo-small" style="background: linear-gradient(135deg, #FF9900, #FF6600);">A</div>
+                                </div>
+                            </div>
+                            <div class="card-title">Cloud Engineer</div>
+                            <div class="card-subtitle">Amazon • Mumbai, India</div>
+                            <div class="card-tags">
+                                <span class="tag">Full-time</span>
+                                <span class="tag">On-site</span>
+                                <span class="tag">₹18-28 LPA</span>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-info">📅 Posted 3 days ago</span>
+                                <span class="card-action">Apply Now →</span>
+                            </div>
+                        </div>
+
+                        <div class="card" onclick="openModal('jobDetailModal')">
+                            <div class="card-header">
+                                <div>
+                                    <div class="company-logo-small" style="background: linear-gradient(135deg, #0668E1, #0052CC);">F</div>
+                                </div>
+                            </div>
+                            <div class="card-title">Product Manager</div>
+                            <div class="card-subtitle">Meta • Gurgaon, India</div>
+                            <div class="card-tags">
+                                <span class="tag">Full-time</span>
+                                <span class="tag">Remote</span>
+                                <span class="tag">₹25-40 LPA</span>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-info">📅 Posted 4 days ago</span>
+                                <span class="card-action">Apply Now →</span>
+                            </div>
+                        </div>
+
+                        <div class="card" onclick="openModal('jobDetailModal')">
+                            <div class="card-header">
+                                <div>
+                                    <div class="company-logo-small" style="background: linear-gradient(135deg, #E50914, #B20710);">N</div>
+                                </div>
+                            </div>
+                            <div class="card-title">Frontend Developer</div>
+                            <div class="card-subtitle">Netflix • Pune, India</div>
+                            <div class="card-tags">
+                                <span class="tag">Full-time</span>
+                                <span class="tag">Hybrid</span>
+                                <span class="tag">₹16-24 LPA</span>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-info">📅 Posted 5 days ago</span>
+                                <span class="card-action">Apply Now →</span>
+                            </div>
+                        </div>
+
+                        <div class="card" onclick="openModal('jobDetailModal')">
+                            <div class="card-header">
+                                <div>
+                                    <div class="company-logo-small" style="background: linear-gradient(135deg, #555, #333);">🍎</div>
+                                </div>
+                            </div>
+                            <div class="card-title">iOS Developer</div>
+                            <div class="card-subtitle">Apple • Bangalore, India</div>
+                            <div class="card-tags">
+                                <span class="tag">Full-time</span>
+                                <span class="tag">On-site</span>
+                                <span class="tag">₹20-30 LPA</span>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-info">📅 Posted 1 week ago</span>
+                                <span class="card-action">Apply Now →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internships Section -->
+                <div class="section" id="internships">
+                    <h2 style="font-size: 2em; margin-bottom: 25px; color: var(--dark);">💼 Internship Opportunities</h2>
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <div class="company-logo-small">G</div>
+                                </div>
+                                <span class="tag" style="background: #e0f2fe; color: #0284c7;">Paid</span>
+                            </div>
+                            <div class="card-title">SDE Intern</div>
+                            <div class="card-subtitle">Google • 6 months • Bangalore</div>
+                            <div class="card-tags">
+                                <span class="tag">Internship</span>
+                                <span class="tag">₹80K/month</span>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-info">👥 50+ applicants</span>
+                                <span class="card-action">Apply Now →</span>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <div class="company-logo-small" style="background: linear-gradient(135deg, #FF9900, #FF6600);">A</div>
+                                </div>
+                            </div>
+                            <div class="card-title">Data Science Intern</div>
+                            <div class="card-subtitle">Amazon • 3 months • Remote</div>
+                            <div class="card-tags">
+                                <span class="tag">Internship</span>
+                                <span class="tag">₹60K/month</span>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-info">👥 120+ applicants</span>
+                                <span class="card-action">Apply Now →</span>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <div class="company-logo-small" style="background: linear-gradient(135deg, #00A4EF, #0078D4);">M</div>
+                                </div>
+                            </div>
+                            <div class="card-title">ML Engineering Intern</div>
+                            <div class="card-subtitle">Microsoft • 4 months • Hyderabad</div>
+                            <div class="card-tags">
+                                <span class="tag">Internship</span>
+                                <span class="tag">₹70K/month</span>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-info">👥 80+ applicants</span>
+                                <span class="card-action">Apply Now →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Competitions Section -->
+                <div class="section" id="competitions">
+                    <h2 style="font-size: 2em; margin-bottom: 25px; color: var(--dark);">🏆 Competitions & Hackathons</h2>
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <div class="company-logo-small">🏆</div>
+                                </div>
+                                <span class="tag" style="background: #fef3c7; color: #d97706;">₹5L Prize</span>
+                            </div>
+                            <div class="card-title">Smart India Hackathon 2025</div>
+                            <div class="card-subtitle">Government of India • Online</div>
+                            <div class="card-tags">
+                                <span class="tag">Hackathon</span>
+                                <span class="tag">36 hours</span>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-info">⏰ Deadline: Oct 30</span>
+                                <span class="card-action">Register →</span>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <div class="company-logo-small" style="background: linear-gradient(135deg, #667eea, #764ba2);">💻</div>
+                                </div>
+                                <span class="tag" style="background: #fef3c7; color: #d97706;">₹3L Prize</span>
+                            </div>
+                            <div class="card-title">Code Rush 2025</div>
+                            <div class="card-subtitle">TechCorp • Virtual</div>
+                            <div class="card-tags">
+                                <span class="tag">Coding Contest</span>
+                                <span class="tag">24 hours</span>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-info">⏰ Deadline: Nov 5</span>
+                                <span class="card-action">Register →</span>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <div class="company-logo-small" style="background: linear-gradient(135deg, #f59e0b, #d97706);">🎨</div>
+                                </div>
+                                <span class="tag" style="background: #fef3c7; color: #d97706;">₹2L Prize</span>
+                            </div>
+                            <div class="card-title">Design Challenge</div>
+                            <div class="card-subtitle">Adobe • International</div>
+                            <div class="card-tags">
+                                <span class="tag">Design</span>
+                                <span class="tag">1 week</span>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-info">⏰ Deadline: Nov 15</span>
+                                <span class="card-action">Register →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Study Notes Section -->
+                <div class="section" id="notes">
+                    <h2 style="font-size: 2em; margin-bottom: 25px; color: var(--dark);">📚 Study Notes & Resources</h2>
+                    
+                    <div style="background: white; border-radius: 15px; padding: 25px; margin-bottom: 30px;">
+                        <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.5em;">📖 Computer Science & Engineering</h3>
+                        <div class="notes-grid">
+                            <div class="note-card">
+                                <div class="note-icon">💻</div>
+                                <div class="note-title">Data Structures & Algorithms</div>
+                                <div class="note-desc">Complete notes with examples, time complexity analysis</div>
+                                <div class="note-meta">
+                                    <span>📄 150 pages</span>
+                                    <span>⭐ 4.8/5</span>
+                                </div>
+                            </div>
+
+                            <div class="note-card" style="border-left-color: var(--secondary);">
+                                <div class="note-icon">🗄</div>
+                                <div class="note-title">Database Management Systems</div>
+                                <div class="note-desc">SQL, NoSQL, Normalization, Transactions</div>
+                                <div class="note-meta">
+                                    <span>📄 120 pages</span>
+                                    <span>⭐ 4.7/5</span>
+                                </div>
+                            </div>
+
+                            <div class="note-card" style="border-left-color: var(--success);">
+                                <div class="note-icon">🌐</div>
+                                <div class="note-title">Computer Networks</div>
+                                <div class="note-desc">OSI Model, TCP/IP, Routing, Protocols</div>
+                                <div class="note-meta">
+                                    <span>📄 100 pages</span>
+                                    <span>⭐ 4.6/5</span>
+                                </div>
+                            </div>
+
+                            <div class="note-card" style="border-left-color: var(--warning);">
+                                <div class="note-icon">🖥</div>
+                                <div class="note-title">Operating Systems</div>
+                                <div class="note-desc">Process, Threads, Memory, Scheduling</div>
+                                <div class="note-meta">
+                                    <span>📄 130 pages</span>
+                                    <span>⭐ 4.9/5</span>
+                                </div>
+                            </div>
+
+                            <div class="note-card" style="border-left-color: var(--danger);">
+                                <div class="note-icon">🔐</div>
+                                <div class="note-title">Cybersecurity Basics</div>
+                                <div class="note-desc">Encryption, Authentication, Network Security</div>
+                                <div class="note-meta">
+                                    <span>📄 90 pages</span>
+                                    <span>⭐ 4.5/5</span>
+                                </div>
+                            </div>
+
+                            <div class="note-card" style="border-left-color: var(--accent);">
+                                <div class="note-icon">🤖</div>
+                                <div class="note-title">Artificial Intelligence</div>
+                                <div class="note-desc">ML, DL, Neural Networks, NLP</div>
+                                <div class="note-meta">
+                                    <span>📄 180 pages</span>
+                                    <span>⭐ 4.8/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: white; border-radius: 15px; padding: 25px; margin-bottom: 30px;">
+                        <h3 style="color: var(--secondary); margin-bottom: 20px; font-size: 1.5em;">📐 Mathematics & Statistics</h3>
+                        <div class="notes-grid">
+                            <div class="note-card" style="border-left-color: var(--secondary);">
+                                <div class="note-icon">📊</div>
+                                <div class="note-title">Discrete Mathematics</div>
+                                <div class="note-desc">Logic, Sets, Relations, Graph Theory</div>
+                                <div class="note-meta">
+                                    <span>📄 110 pages</span>
+                                    <span>⭐ 4.7/5</span>
+                                </div>
+                            </div>
+
+                            <div class="note-card" style="border-left-color: var(--primary);">
+                                <div class="note-icon">📈</div>
+                                <div class="note-title">Probability & Statistics</div>
+                                <div class="note-desc">Distributions, Hypothesis Testing, Regression</div>
+                                <div class="note-meta">
+                                    <span>📄 140 pages</span>
+                                    <span>⭐ 4.6/5</span>
+                                </div>
+                            </div>
+
+                            <div class="note-card" style="border-left-color: var(--success);">
+                                <div class="note-icon">🔢</div>
+                                <div class="note-title">Linear Algebra</div>
+                                <div class="note-desc">Matrices, Vectors, Eigenvalues, Transformations</div>
+                                <div class="note-meta">
+                                    <span>📄 95 pages</span>
+                                    <span>⭐ 4.8/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: white; border-radius: 15px; padding: 25px; margin-bottom: 30px;">
+                        <h3 style="color: var(--warning); margin-bottom: 20px; font-size: 1.5em;">⚡ Electronics & Electrical</h3>
+                        <div class="notes-grid">
+                            <div class="note-card" style="border-left-color: var(--warning);">
+                                <div class="note-icon">⚡</div>
+                                <div class="note-title">Digital Electronics</div>
+                                <div class="note-desc">Logic Gates, Flip-Flops, Circuits</div>
+                                <div class="note-meta">
+                                    <span>📄 105 pages</span>
+                                    <span>⭐ 4.7/5</span>
+                                </div>
+                            </div>
+
+                            <div class="note-card" style="border-left-color: var(--danger);">
+                                <div class="note-icon">🔌</div>
+                                <div class="note-title">Circuit Theory</div>
+                                <div class="note-desc">AC/DC Circuits, Network Analysis</div>
+                                <div class="note-meta">
+                                    <span>📄 125 pages</span>
+                                    <span>⭐ 4.5/5</span>
+                                </div>
+                            </div>
+
+                            <div class="note-card" style="border-left-color: var(--accent);">
+                                <div class="note-icon">📡</div>
+                                <div class="note-title">Signals & Systems</div>
+                                <div class="note-desc">Fourier Transform, Laplace, Z-Transform</div>
+                                <div class="note-meta">
+                                    <span>📄 115 pages</span>
+                                    <span>⭐ 4.6/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: white; border-radius: 15px; padding: 25px; margin-bottom: 30px;">
+                        <h3 style="color: var(--success); margin-bottom: 20px; font-size: 1.5em;">🏗 Mechanical & Civil Engineering</h3>
+                        <div class="notes-grid">
+                            <div class="note-card" style="border-left-color: var(--success);">
+                                <div class="note-icon">⚙</div>
+                                <div class="note-title">Thermodynamics</div>
+                                <div class="note-desc">Laws, Cycles, Heat Transfer, Entropy</div>
+                                <div class="note-meta">
+                                    <span>📄 135 pages</span>
+                                    <span>⭐ 4.7/5</span>
+                                </div>
+                            </div>
+
+                            <div class="note-card" style="border-left-color: var(--primary);">
+                                <div class="note-icon">🏗</div>
+                                <div class="note-title">Strength of Materials</div>
+                                <div class="note-desc">Stress, Strain, Bending, Torsion</div>
+                                <div class="note-meta">
+                                    <span>📄 145 pages</span>
+                                    <span>⭐ 4.8/5</span>
+                                </div>
+                            </div>
+
+                            <div class="note-card" style="border-left-color: var(--secondary);">
+                                <div class="note-icon">🔧</div>
+                                <div class="note-title">Manufacturing Processes</div>
+                                <div class="note-desc">Casting, Welding, Machining, Forming</div>
+                                <div class="note-meta">
+                                    <span>📄 120 pages</span>
+                                    <span>⭐ 4.6/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: white; border-radius: 15px; padding: 25px; margin-bottom: 30px;">
+                        <h3 style="color: var(--accent); margin-bottom: 20px; font-size: 1.5em;">💼 Management & Commerce</h3>
+                        <div class="notes-grid">
+                            <div class="note-card" style="border-left-color: var(--accent);">
+                                <div class="note-icon">📊</div>
+                                <div class="note-title">Financial Management</div>
+                                <div class="note-desc">Capital Budgeting, Working Capital, Risk</div>
+                                <div class="note-meta">
+                                    <span>📄 100 pages</span>
+                                    <span>⭐ 4.7/5</span>
+                                </div>
+                            </div>
+
+                            <div class="note-card" style="border-left-color: var(--primary);">
+                                <div class="note-icon">📈</div>
+                                <div class="note-title">Marketing Management</div>
+                                <div class="note-desc">4Ps, Consumer Behavior, Digital Marketing</div>
+                                <div class="note-meta">
+                                    <span>📄 110 pages</span>
+                                    <span>⭐ 4.6/5</span>
+                                </div>
+                            </div>
+
+                            <div class="note-card" style="border-left-color: var(--success);">
+                                <div class="note-icon">👥</div>
+                                <div class="note-title">Human Resource Management</div>
+                                <div class="note-desc">Recruitment, Training, Performance</div>
+                                <div class="note-meta">
+                                    <span>📄 95 pages</span>
+                                    <span>⭐ 4.5/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tracker Section -->
+                <div class="section" id="tracker">
+                    <h2 style="font-size: 2em; margin-bottom: 25px; color: var(--dark);">📊 My Placement Tracker</h2>
+                    
+                    <div class="cards-grid">
+                        <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;">
+                            <div class="card-title" style="color: white;">Applications Sent</div>
+                            <div style="font-size: 3em; font-weight: 800; margin: 20px 0;">24</div>
+                            <div style="opacity: 0.9;">Target: 32 applications</div>
+                        </div>
+
+                        <div class="card" style="background: linear-gradient(135deg, var(--success), #059669); color: white;">
+                            <div class="card-title" style="color: white;">Interviews Scheduled</div>
+                            <div style="font-size: 3em; font-weight: 800; margin: 20px 0;">8</div>
+                            <div style="opacity: 0.9;">3 this week</div>
+                        </div>
+
+                        <div class="card" style="background: linear-gradient(135deg, var(--warning), #d97706); color: white;">
+                            <div class="card-title" style="color: white;">Offers Received</div>
+                            <div style="font-size: 3em; font-weight: 800; margin: 20px 0;">2</div>
+                            <div style="opacity: 0.9;">🎉 Congratulations!</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-box">
+                        <h3 style="color: var(--dark); margin-bottom: 20px; font-size: 1.5em;">📈 Application Progress</h3>
+                        <div class="chart-container">
+                            <canvas id="trackerChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div style="background: white; border-radius: 15px; padding: 30px; margin-top: 30px;">
+                        <h3 style="color: var(--dark); margin-bottom: 25px; font-size: 1.5em;">🔄 Application Pipeline</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                            <div style="background: var(--light); padding: 20px; border-radius: 12px; border-left: 5px solid var(--primary);">
+                                <h4 style="color: var(--primary); margin-bottom: 10px;">Applied (5)</h4>
+                                <div style="background: white; padding: 12px; border-radius: 8px; margin: 8px 0;">
+                                    <strong>Google</strong>
+                                    <p style="font-size: 0.9em; color: var(--gray); margin-top: 5px;">Software Engineer</p>
+                                </div>
+                                <div style="background: white; padding: 12px; border-radius: 8px; margin: 8px 0;">
+                                    <strong>Microsoft</strong>
+                                    <p style="font-size: 0.9em; color: var(--gray); margin-top: 5px;">Data Analyst</p>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--light); padding: 20px; border-radius: 12px; border-left: 5px solid var(--warning);">
+                                <h4 style="color: var(--warning); margin-bottom: 10px;">Screening (3)</h4>
+                                <div style="background: white; padding: 12px; border-radius: 8px; margin: 8px 0;">
+                                    <strong>Amazon</strong>
+                                    <p style="font-size: 0.9em; color: var(--gray); margin-top: 5px;">Cloud Engineer</p>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--light); padding: 20px; border-radius: 12px; border-left: 5px solid var(--secondary);">
+                                <h4 style="color: var(--secondary); margin-bottom: 10px;">Interview (2)</h4>
+                                <div style="background: white; padding: 12px; border-radius: 8px; margin: 8px 0;">
+                                    <strong>Meta</strong>
+                                    <p style="font-size: 0.9em; color: var(--gray); margin-top: 5px;">Product Manager</p>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--light); padding: 20px; border-radius: 12px; border-left: 5px solid var(--success);">
+                                <h4 style="color: var(--success); margin-bottom: 10px;">Offer (2)</h4>
+                                <div style="background: white; padding: 12px; border-radius: 8px; margin: 8px 0;">
+                                    <strong>Apple</strong>
+                                    <p style="font-size: 0.9em; color: var(--gray); margin-top: 5px;">iOS Developer</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar-area">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">📊 Your Stats</div>
+                    <div class="stat-item">
+                        <span class="stat-label">Profile Completion</span>
+                        <span class="stat-value">85%</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Applications</span>
+                        <span class="stat-value">24</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Success Rate</span>
+                        <span class="stat-value">33%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Saved Jobs</span>
+                        <span class="stat-value">12</span>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">🎯 Recommended Skills</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <span class="tag">Python</span>
+                        <span class="tag">React</span>
+                        <span class="tag">SQL</span>
+                        <span class="tag">AWS</span>
+                        <span class="tag">Docker</span>
+                        <span class="tag">Git</span>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">🔥 Trending Companies</div>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                            <div class="company-logo-small" style="width: 45px; height: 45px; font-size: 18px;">G</div>
+                            <div>
+                                <strong style="display: block;">Google</strong>
+                                <span style="font-size: 0.85em; color: var(--gray);">15 jobs</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                            <div class="company-logo-small" style="width: 45px; height: 45px; font-size: 18px; background: linear-gradient(135deg, #00A4EF, #0078D4);">M</div>
+                            <div>
+                                <strong style="display: block;">Microsoft</strong>
+                                <span style="font-size: 0.85em; color: var(--gray);">12 jobs</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                            <div class="company-logo-small" style="width: 45px; height: 45px; font-size: 18px; background: linear-gradient(135deg, #FF9900, #FF6600);">A</div>
+                            <div>
+                                <strong style="display: block;">Amazon</strong>
+                                <span style="font-size: 0.85em; color: var(--gray);">18 jobs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;">
+                    <div class="sidebar-title" style="color: white;">💡 Daily Tip</div>
+                    <p style="line-height: 1.6; opacity: 0.95;">Tailor your resume for each application. Highlight skills that match the job description to increase your chances!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Detail Modal -->
+    <div class="modal" id="jobDetailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Software Engineer</div>
+                <button class="close-btn" onclick="closeModal('jobDetailModal')">×</button>
+            </div>
+            <div style="margin-bottom: 25px;">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                    <div class="company-logo-small" style="width: 70px; height: 70px; font-size: 32px;">G</div>
+                    <div>
+                        <h3 style="margin-bottom: 5px;">Google Inc.</h3>
+                        <p style="color: var(--gray);">📍 Bangalore, India • 💼 Full-time</p>
+                    </div>
+                </div>
+                <div class="card-tags" style="margin-bottom: 20px;">
+                    <span class="tag">Remote</span>
+                    <span class="tag">₹15-25 LPA</span>
+                    <span class="tag">2-4 years exp</span>
+                </div>
+                <h4 style="color: var(--dark); margin: 20px 0 10px;">Job Description</h4>
+                <p style="color: var(--gray); line-height: 1.6;">We are looking for a talented Software Engineer to join our team. You will work on cutting-edge technologies and contribute to products used by millions.</p>
+                
+                <h4 style="color: var(--dark); margin: 20px 0 10px;">Requirements</h4>
+                <ul style="color: var(--gray); line-height: 1.8; padding-left: 20px;">
+                    <li>Bachelor's degree in Computer Science or related field</li>
+                    <li>2-4 years of software development experience</li>
+                    <li>Proficiency in Python, Java, or C++</li>
+                    <li>Strong problem-solving skills</li>
+                </ul>
+
+                <h4 style="color: var(--dark); margin: 20px 0 10px;">Skills Required</h4>
+                <div class="card-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">Java</span>
+                    <span class="tag">Data Structures</span>
+                    <span class="tag">Algorithms</span>
+                    <span class="tag">System Design</span>
+                </div>
+            </div>
+            <button class="btn-primary" style="width: 100%; padding: 15px; font-size: 1.1em;" onclick="showToast('Application submitted successfully!')">Apply Now</button>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="modal-header">
+                <div class="modal-title">Welcome Back</div>
+                <button class="close-btn" onclick="closeModal('loginModal')">×</button>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: 600; margin-bottom: 8px;">Email</label>
+                <input type="email" placeholder="your.email@example.com" style="width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px; font-size: 1em;">
+            </div>
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; font-weight: 600; margin-bottom: 8px;">Password</label>
+                <input type="password" placeholder="••••••••" style="width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px; font-size: 1em;">
+            </div>
+            <button class="btn-primary" style="width: 100%; padding: 15px; font-size: 1.1em;" onclick="closeModal('loginModal'); showToast('Logged in successfully!')">Login</button>
+            <p style="text-align: center; margin-top: 20px; color: var(--gray);">Don't have an account? <span style="color: var(--primary); font-weight: 700; cursor: pointer;">Sign up</span></p>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        function showMainSection(section) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(section).classList.add('active');
+        }
+
+        function changeTab(element, section) {
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+            showMainSection(section);
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        function openNotifications() {
+            showToast('You have 8 new notifications!');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        document.addEventListener('click', e => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('show');
+            }
+        });
+
+        // Chart for Tracker
+        const ctx = document.getElementById('trackerChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+                datasets: [{
+                    label: 'Applications',
+                    data: [3, 5, 8, 6, 10, 12],
+                    backgroundColor: 'rgba(37, 99, 235, 0.8)',
+                    borderRadius: 8,
+                    borderSkipped: false
+                }, {
+                    label: 'Interviews',
+                    data: [0, 1, 2, 3, 4, 5],
+                    backgroundColor: 'rgba(124, 58, 237, 0.8)',
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' }
+                },
+                scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 2 } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
